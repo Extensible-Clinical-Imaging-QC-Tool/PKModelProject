@@ -31,4 +31,4 @@ jobs:
           python -m pip install .[dev]
       - name: run style tests
         run: |
-          python -m flake8 --ignore=W
+          python -m flake8 --ignore=W,E
