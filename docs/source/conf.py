@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../../pkmodel'))
 project = 'Pharmokinetics Modelling Project'
 copyright = '2020, Group 4'
 author = 'Group 4: Emmanuelle Bourigault, Alex Tanaka,\ 
-		Emmanuel Oladokun, Julia Krol'
+Emmanuel Oladokun, Julia Krol'
 
 
 # -- General configuration ---------------------------------------------------
