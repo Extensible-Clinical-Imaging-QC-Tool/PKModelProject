@@ -14,7 +14,7 @@ class Solution:
 
     """
     def __init__(self, list_of_models, t_eval, y0 = [0,0]):
-        self.models = models
+        self.models = list_of_models
         self.y0 = np.array(y0)
         self.t_eval = t_eval
     
