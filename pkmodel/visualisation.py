@@ -6,12 +6,9 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
-import csv as csv
+import pandas as pd 
 
-from matplotlib import cm
-from matplotlib.ticker import MultipleLocator, FixedLocator, FixedFormatter, ScalarFormatter
-from collections import OrderedDict
+from matplotlib import cm 
 
 #Class
 
