@@ -13,6 +13,21 @@ class Model:
     ----------
     :param components: integer
     :param model_args: dict
+
+        {'name': 'model_name',
+         'V_c' : 0.0
+         'V_p1' : 0.0
+           .
+           .
+         'V_pN' : 0.0
+         'Q_p1' : 0.0
+           .
+           .
+         'Q_pN' : 0.0
+         'CL' : 0.0
+        }    
+        
+
     :param dose_type: str 
 
     
@@ -28,8 +43,29 @@ class Model:
         self.model_args = model_args
         self.dose_type = dose_type
 
+    
+    def make_args(self):
+        # creates a list of arguments which will
+        # be used to call rhs in solution.py
 
-    def get_peripheral_rates(q_x,v_x,Q_px):
+        CL = self.model_args['CL']
+        Q_rates = []
+        vols = [self.model_args['V_c']]
+
+        for i in range(1,self.components):
+            key_a = 'V_p' + str(i)
+            key_b = 'Q_p' + str(i)
+
+            vols.append(model_args[key_a])
+            Q_rates.append(model_args[key_b])
+
+        if self.dose_type == 'sc'
+            return args = [k_a,vols,Q_rates,CL]
+        else:
+            return args = [vols,Q_rates,CL]
+
+
+    def get_peripheral_rates(v_x,q_x,Q_px):
         # Calculate dqpx_dt for all components present
         total = []
         for i in range(1,len(v_x)):
@@ -41,7 +77,8 @@ class Model:
     if self.dose_type == 'sc'
     # Define the system of equations based on the type of dose 
     # intake
-        def rhs(t,y,k_a,v_x,Q_px,dose):
+
+        def rhs(t,y,k_a,v_x,Q_px,CL,dose):
             q_0,q_x = y[0],y[1:]
             dq0_dt = dose(t,X) - k_a*q_0
             transitions = get_peripheral_rates(q_x,v_x,Q_px)
@@ -49,15 +86,12 @@ class Model:
             
             return [dq0_dt,dqc_dt] + transitions
     else:
-        def rhs(t,y,v_x,Q_px,dose):
+        def rhs(t,y,v_x,Q_px,CL,dose):
             q_x  = y
             transitions = get_peripheral_rates(q_x,v_x,Q_px)
-            dqc_dt = dose(t,X) - (q_x[0]/v_x[0])*CL - sum(transitions)
+            dqc_dt = dose(t,X) - (q_x[0]/v_x[,0])*CL - sum(transitions)
 
             return [dqc_dt] + transitions
 
 
-
-hey = 4
-hey = hey * 2
 
