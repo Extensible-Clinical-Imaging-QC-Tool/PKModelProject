@@ -16,7 +16,8 @@ from collections import OrderedDict
 #Class
 
 class Visualisation:
-    """A Pharmokinetic (PK) model solution visualiser
+    """
+    A Pharmokinetic (PK) model solution visualiser
 
     Parameters
     ----------
@@ -40,6 +41,7 @@ class Visualisation:
                 'remarkable model']
 
     """
+
     def __init__(self, data_file_paths, data_labels):
         self.time = {}
         self.quantity = {}
@@ -68,8 +70,8 @@ class Visualisation:
 
         save_file_path: None or str or PathLike or file-like object, optional
             If None then the figure will not be saved.
-            If a string, then it will be used as the file path or file 
-            name of the saved figure.
+            If str or PathLike or file-like object, then it will be used 
+            as the file path or file name of the saved figure.
 
             e.g. '../path/to/stunning_plot.pdf'
 
