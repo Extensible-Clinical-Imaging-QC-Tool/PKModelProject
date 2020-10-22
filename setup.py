@@ -64,6 +64,7 @@ setup(
         'numpy',
         'matplotlib',
         'scipy',
+        'pandas',
     ],
     extras_require={
         'docs': [
