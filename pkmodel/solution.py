@@ -5,6 +5,7 @@ import numpy as np
 import scipy.integrate
 import pandas as pd
 import csv as csv
+import os
 class Solution:
     """A Pharmokinetic (PK) model solution
 
@@ -20,25 +21,37 @@ class Solution:
         self.models = list_of_models
         self.y0 = np.array(y0)
         self.t_eval = t_eval
+
     
     def analyse_models(self):
+
         for model in self.models:
-            args = self.get_arguments(model)
-            sol = self._integrate(model)
-            self._save_to_csv(sol)
+            args = model.make_args()
+            sol = self._integrate(model,args)
+            path = os.path.join(os.getcwd(),model.model_args['name'])
+            print(path)
+            self._save_to_csv(sol.t,sol.y,path)
         return sol
     
     def _get_arguments(self, model):
-        return model.args #function/property of model from model class?
+        return model.make_args() #function/property of model from model class?
     
-    def _integrate(self, model):
-        sol = scipy.integrate.solve_ivp(fun =  lambda t, y: model.rhs(t, y, *args), #function for getting rhs?
+    def _integrate(self, model,args):
+
+        #args_list = []
+        #for l in self.args:
+        #    args_list.append(*self.args[])
+
+        print('self.args=',args)
+
+        sol = scipy.integrate.solve_ivp(fun =  lambda t, y: model.rhs(t, y, args), #function for getting rhs?
          t_span = [self.t_eval[0], self.t_eval[-1]],
          y0 = self.y0, t_eval = self.t_eval
+         #args= (args,)
         )
         return sol
     
-    def _save_to_csv(self, time, sol, save_file_path):
+    def _save_to_csv(self,time, sol, save_file_path):
         """
         Saves the provided time steps and solution to a .csv file.
 
@@ -58,11 +71,10 @@ class Solution:
             e.g. '../path/to/solution_data.csv'
 
         """
-        if len(time) != len(sol):
+        if len(time) != len(sol[1]):
             raise ValueError('The solution must be the same length as the time.')
 
-        solution_data = np.column_stack( (time, sol) )
-
+        solution_data = np.hstack( (time.reshape((len(time),1)), sol.transpose()) )
         with open(save_file_path, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
             writer.writerows(solution_data)

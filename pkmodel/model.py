@@ -15,29 +15,31 @@ class Model:
     :param model_args: dict
 
         {'name': 'model_name',
-         'V_c' : 0.0
-         'V_p1' : 0.0
+         'V_c' : 0.0,
+         'V_p1' : 0.0,
            .
            .
-         'V_pN' : 0.0
-         'Q_p1' : 0.0
+         'V_pN' : 0.0,
+         'Q_p1' : 0.0,
            .
            .
-         'Q_pN' : 0.0
+         'Q_pN' : 0.0,
          'CL' : 0.0
         }    
         
 
     :param dose_type: str 
+        'sc' = subcutaneous
+        'iv' = intravenous
 
     
 
     """
-    def __init__(self, components: int,model_args: dict,dose_type: str):
-        if (len(model_args.keys()) != 2*components + 1 and dose_type == 'iv') \
-            or len(model_args.keys()) != 2*(components + 1) and dose_type =='sc'):
+    def __init__(self, components,model_args,dose_type):
+        if (len(model_args.keys()) != 2*(components + 1) and dose_type == 'iv' \
+            or len(model_args.keys()) != 2*(components + 1) + 1 and dose_type =='sc'):
 
-            return "ERROR: Model not fully defined"
+            ValueError("ERROR: Model not fully defined")
 
         self.components = components
         self.model_args = model_args
@@ -52,20 +54,24 @@ class Model:
         Q_rates = []
         vols = [self.model_args['V_c']]
 
-        for i in range(1,self.components):
+        for i in range(1,self.components + 1):
             key_a = 'V_p' + str(i)
             key_b = 'Q_p' + str(i)
+            
+            vols.append(self.model_args[key_a])
+            Q_rates.append(self.model_args[key_b])
 
-            vols.append(model_args[key_a])
-            Q_rates.append(model_args[key_b])
-
-        if self.dose_type == 'sc'
-            return args = [k_a,vols,Q_rates,CL]
+        if self.dose_type == 'sc':
+            args = [k_a,vols,Q_rates,CL]
+            return args
+            
         else:
-            return args = [vols,Q_rates,CL]
+            args = [vols,Q_rates,CL]
+            print(args)
+            return args
 
 
-    def get_peripheral_rates(v_x,q_x,Q_px):
+    def get_peripheral_rates(self,v_x,q_x,Q_px):
         # Calculate dqpx_dt for all components present
         total = []
         for i in range(1,len(v_x)):
@@ -73,25 +79,31 @@ class Model:
 
         return total
 
+    def dose(self,t, X=1):
+        return X
 
-    if self.dose_type == 'sc'
-    # Define the system of equations based on the type of dose 
-    # intake
+    #if self.dose_type == 'sc':
+    ## Define the system of equations based on the type of dose 
+    ## intake
+#
+    #    def rhs(t,y,k_a,v_x,Q_px,CL,dose):
+    #        q_0,q_x = y[0],y[1:]
+    #        dq0_dt = dose(t,X) - k_a*q_0
+    #        transitions = get_peripheral_rates(q_x,v_x,Q_px)
+    #        dqc_dt = k_a*q_0 - (q_x[0]/v_x[0])*CL - sum(transitions)
+    #        
+    #        return [dq0_dt,dqc_dt] + transitions
+    #else:
+    def rhs(self,t,y,args): #v_x,Q_px,CL,dose):
+        v_x = args[0]
+        Q_px = args[1]
+        CL = args[2]
 
-        def rhs(t,y,k_a,v_x,Q_px,CL,dose):
-            q_0,q_x = y[0],y[1:]
-            dq0_dt = dose(t,X) - k_a*q_0
-            transitions = get_peripheral_rates(q_x,v_x,Q_px)
-            dqc_dt = k_a*q_0 - (q_x[0]/v_x[0])*CL - sum(transitions)
-            
-            return [dq0_dt,dqc_dt] + transitions
-    else:
-        def rhs(t,y,v_x,Q_px,CL,dose):
-            q_x  = y
-            transitions = get_peripheral_rates(q_x,v_x,Q_px)
-            dqc_dt = dose(t,X) - (q_x[0]/v_x[,0])*CL - sum(transitions)
+        q_x  = y
+        transitions = self.get_peripheral_rates(v_x,q_x,Q_px)
+        dqc_dt = self.dose(t) - (q_x[0]/v_x[0])*CL# - sum(transitions)
 
-            return [dqc_dt] + transitions
+        return [dqc_dt] + transitions
 
 
 
