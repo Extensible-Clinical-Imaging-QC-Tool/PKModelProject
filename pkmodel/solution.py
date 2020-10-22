@@ -48,7 +48,8 @@ class Solution:
             A list or array of time step values.
 
         sol: list or array of floats, required
-            A list or array of solution values.
+            A list or array of solution values. Must be the
+            same length as the time parameter.
 
         save_file_path: str or PathLike or file-like object, required
             If str or PathLike or file-like object, then it will be used 
@@ -57,6 +58,8 @@ class Solution:
             e.g. '../path/to/solution_data.csv'
 
         """
+        if len(time) != len(sol):
+            raise ValueError('The solution must be the same length as the time.')
 
         solution_data = np.column_stack( (time, sol) )
 
