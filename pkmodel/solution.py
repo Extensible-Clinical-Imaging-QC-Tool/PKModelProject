@@ -3,6 +3,8 @@
 #
 import numpy as np
 import scipy.integrate
+import pandas as pd
+import csv as csv
 class Solution:
     """A Pharmokinetic (PK) model solution
 
@@ -36,8 +38,31 @@ class Solution:
         )
         return sol
     
-    def _save_to_csv(self, sol):
-        # Alex's csv function
+    def _save_to_csv(self, time, sol, save_file_path):
+        """
+        Saves the provided time steps and solution to a .csv file.
+
+        Parameters
+        ----------
+        time: list or array of floats, required
+            A list or array of time step values.
+
+        sol: list or array of floats, required
+            A list or array of solution values.
+
+        save_file_path: str or PathLike or file-like object, required
+            If str or PathLike or file-like object, then it will be used 
+            as the file path or file name of the saved figure.
+
+            e.g. '../path/to/solution_data.csv'
+
+        """
+
+        solution_data = np.column_stack( (time, sol) )
+
+        with open(save_file_path, 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',')
+            writer.writerows(solution_data)
 
 
 
