@@ -1,3 +1,7 @@
+[![Documentation Status](https://readthedocs.org/projects/pkmodelproject/badge/?version=latest)](https://pkmodelproject.readthedocs.io/en/latest/?badge=latest)
+
+[![codecov](https://codecov.io/gh/Extensible-Clinical-Imaging-QC-Tool/PKModelProject/branch/master/graph/badge.svg?token=3MOJ1R4PLD)](undefined)
+
 # Pharmokinetic Modelling Project 
 
 The Pharmokinetic Modelling (PK) Project is a python library that allows pharmacologists and individuals interested in pharmokinetics to solve and visualise the solution of a PK model after specifying a protocol.
