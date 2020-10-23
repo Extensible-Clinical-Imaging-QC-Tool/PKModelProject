@@ -24,7 +24,8 @@ class Model:
            .
            .
          'Q_pN' : 0.0,
-         'CL' : 0.0
+         'CL' : 0.0,
+         ('k_a') : 0.0
         }    
         
 
@@ -32,18 +33,26 @@ class Model:
         'sc' = subcutaneous
         'iv' = intravenous
 
-    
-
     """
     def __init__(self, components,model_args,dose_type,dose_t):
-        if ((dose_type == 'iv' and len(model_args.keys()) != 2*(components + 1)-1) \
-            or (dose_type =='sc'and len(model_args.keys()) != 2*(components + 1))):
+        # Preconditions to ensure that the correct number of properties are provided
+        # for the desired model and that the inputs are correct.
+        if dose_type == 'sc' and components < 2:
+            raise ValueError("A model of subcutaneous injection must posses at\
+                lease two components: Skin and Central")
 
-            raise ValueError("Model incorrectly defined. Please ensure all \
+        if ((dose_type == 'iv' and len(model_args.keys()) != 2*components + 1) \
+            or (dose_type =='sc'and len(model_args.keys()) != 2*components)):
+            
+            raise ValueError("Model incorrectly defined. Please ensure all\
                 components are defined")
 
         if dose_type != 'sc' and dose_type!='iv':
            raise ValueError("Not a valid form of injection. 'sc' or 'iv' required")
+
+        values = list(model_args.values())
+        assert all(value >= 0 for value in values[1:]), 'All model properties\
+            must be >= 0'
 
         self.components = components
         self.model_args = model_args
@@ -53,50 +62,50 @@ class Model:
 
     
     def make_args(self):
-        # creates a list of arguments which will
-        # be used to call rhs in solution.py
+        # Creates a list of arguments that define the system of equations.
+        # The arguments will be used to call rhs in solution.py
 
         CL = self.model_args['CL']
         Q_rates = []
         vols = [self.model_args['V_c']]
 
-        for i in range(1,self.components):
+        if self.dose_type == 'sc':
+            iter_range = range(1,self.components - 1)
+            k_a = self.model_args['k_a']
+            args = [k_a,vols,Q_rates,CL]
+        else:
+            iter_range = range(1,self.components - 1)
+            args = [vols,Q_rates,CL]
+
+        for i in iter_range:
             key_a = 'V_p' + str(i)
             key_b = 'Q_p' + str(i)
             
             vols.append(self.model_args[key_a])
             Q_rates.append(self.model_args[key_b])
 
-        if self.dose_type == 'sc':
-            k_a = self.model_args['k_a']
-            args = [k_a,vols,Q_rates,CL]
-            return args
-            
-        else:
-            args = [vols,Q_rates,CL]
-            print(args)
-            return args
+        return args
 
 
     def get_peripheral_rates(self,v_x,q_x,Q_px):
         # Calculate dqpx_dt for all components present
         total = []
-        for i in range(1,len(Q_px)):
+        for i in range(1,len(Q_px) + 1):
             total.append(Q_px[i-1]*(q_x[0]/v_x[0] - q_x[i]/v_x[i]))
 
         return total
 
+
     def dose(self):
+        # Return the dose at time t
         X = self.dose_t[self.counter]
         self.counter += 1
-        #print(X)
         return X
 
 
+    def rhs(self,t,y,args):
     # Define the system of equations based on the type of dose 
     # intake
-
-    def rhs(self,t,y,args):
         if self.dose_type == 'sc':
             k_a, v_x, Q_px, CL  = args[0], args[1], args[2], args[3]
             q_0, q_x = y[0], y[1:]
@@ -115,7 +124,3 @@ class Model:
 
             return [dqc_dt] + transitions
 
-#TODO Fix subcutaneous rhs()
-#TODO Fix components input and output
-#TODO Once you've synced with protocol.py, remove the 'X' dict key and
-# alter the condition in __init__()
