@@ -40,7 +40,7 @@ class Solution:
 
         print('self.args=',args)
 
-        sol = scipy.integrate.solve_ivp(fun =  lambda t, y: model.rhs(t, y, args), #function for getting rhs?
+        sol = scipy.integrate.solve_ivp(fun =  lambda t,y: model.rhs(t, y, args), #function for getting rhs?
          t_span = [self.t_eval[0], self.t_eval[-1]],
          y0 = self.y0, t_eval = self.t_eval
         )

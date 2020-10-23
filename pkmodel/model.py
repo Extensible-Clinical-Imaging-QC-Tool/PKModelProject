@@ -35,9 +35,9 @@ class Model:
     
 
     """
-    def __init__(self, components,model_args,dose_type):
-        if ((dose_type == 'iv' and len(model_args.keys()) != 2*(components + 1)) \
-            or (dose_type =='sc'and len(model_args.keys()) != 2*(components + 1) + 1)):
+    def __init__(self, components,model_args,dose_type,dose_t):
+        if ((dose_type == 'iv' and len(model_args.keys()) != 2*(components + 1)-1) \
+            or (dose_type =='sc'and len(model_args.keys()) != 2*(components + 1))):
 
             raise ValueError("Model incorrectly defined. Please ensure all \
                 components are defined")
@@ -48,6 +48,8 @@ class Model:
         self.components = components
         self.model_args = model_args
         self.dose_type = dose_type
+        self.dose_t = dose_t
+        self.counter = 0
 
     
     def make_args(self):
@@ -84,7 +86,10 @@ class Model:
 
         return total
 
-    def dose(self,t, X=1):
+    def dose(self):
+        X = self.dose_t[self.counter]
+        self.counter += 1
+        #print(X)
         return X
 
 
@@ -96,7 +101,7 @@ class Model:
             k_a, v_x, Q_px, CL  = args[0], args[1], args[2], args[3]
             q_0, q_x = y[0], y[1:]
 
-            dq0_dt = self.dose(t) - k_a*q_0
+            dq0_dt = self.dose() - k_a*q_0
             transitions = self.get_peripheral_rates(v_x,q_x,Q_px)
             dqc_dt = k_a*q_0 - (q_x[0]/v_x[0])*CL - sum(transitions)
             
@@ -106,7 +111,7 @@ class Model:
             v_x, Q_px, CL  = args[0], args[1], args[2]
             q_x  = y
             transitions = self.get_peripheral_rates(v_x,q_x,Q_px)
-            dqc_dt = self.dose(t) - (q_x[0]/v_x[0])*CL - sum(transitions)
+            dqc_dt = self.dose() - (q_x[0]/v_x[0])*CL - sum(transitions)
 
             return [dqc_dt] + transitions
 
