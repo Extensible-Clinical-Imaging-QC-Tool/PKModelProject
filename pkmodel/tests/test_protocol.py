@@ -5,14 +5,11 @@ import pytest
 import Dose
 
 """
-Testing of the Protocol class from the Dose.py file 
-
+    Tests of the Protocol class from the Dose file
 """
 
 class ProtocolTest(unittest.TestCase):
-    """
-    Tests the Protocol class.
-    """
+   
     def test_steady_dose(self):
         """
         Unittests of the steady dose function
@@ -40,5 +37,15 @@ class ProtocolInput(object):
         protocol = Dose.Protocol()
         with pytest.raises(TypeError):
              protocol.instantaneous_dose('hello world')
+
+
+# Unittest
+ProtocolTest().test_steady_dose()
+
+# Parameterised Unittests
+tests_steady_dose()
+
+# Testing for TypeError when passing strings
+ProtocolInput().test_instantaneous_dose_string()
 
 

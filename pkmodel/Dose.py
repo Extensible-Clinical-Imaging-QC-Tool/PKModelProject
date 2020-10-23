@@ -69,7 +69,7 @@ class Protocol(object):
 		
 	# Protocol 2: Steady injection of drug over time 
 		
-	def steady_dose(self,z):
+	def steady_dose(self):
 	
 		t = self.t
 		quantity = self.quantity
