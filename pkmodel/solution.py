@@ -45,7 +45,9 @@ class Solution:
         count = 0
         sol_list = []
         for model in self.models:
+            # Get arguments of the model using Model's make_arg methods
             args = model.make_args()
+            # Create a 1D array of initial conditions for the evaluated model
             y0 = np.array(self.y0[count])
             sol = self._integrate(model,args,y0)
             sol_list.append(sol)
@@ -76,11 +78,10 @@ class Solution:
 
         """
 
-        sol = scipy.integrate.solve_ivp(fun =  lambda t, y: model.rhs(t, y, args), #function for getting rhs?
+        sol = scipy.integrate.solve_ivp(fun =  lambda t, y: model.rhs(t, y, args),
          t_span = [self.t_eval[0], self.t_eval[-1]],
-         y0 = y0, t_eval = self.t_eval
-         #args= (args,)
-        )
+         y0 = y0, t_eval = self.t_eval)
+         
         return sol
     
     def _save_to_csv(self,time, sol, save_file_path):
