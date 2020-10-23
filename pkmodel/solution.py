@@ -24,7 +24,9 @@ class Solution:
 
     """
    
+
     def __init__(self, list_of_models, t_eval, y0):
+
         self.models = list_of_models
         self.y0 = y0
         self.t_eval = t_eval
