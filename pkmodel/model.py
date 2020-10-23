@@ -74,7 +74,7 @@ class Model:
             k_a = self.model_args['k_a']
             args = [k_a,vols,Q_rates,CL]
         else:
-            iter_range = range(1,self.components - 1)
+            iter_range = range(1,self.components)
             args = [vols,Q_rates,CL]
 
         for i in iter_range:
