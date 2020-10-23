@@ -17,7 +17,7 @@ class Solution:
 
     """
    
-    def __init__(self, list_of_models, t_eval, y0 = [0,0]):
+    def __init__(self, list_of_models, t_eval, y0 = [0,0,0]):
         self.models = list_of_models
         self.y0 = np.array(y0)
         self.t_eval = t_eval
@@ -38,16 +38,11 @@ class Solution:
     
     def _integrate(self, model,args):
 
-        #args_list = []
-        #for l in self.args:
-        #    args_list.append(*self.args[])
-
         print('self.args=',args)
 
         sol = scipy.integrate.solve_ivp(fun =  lambda t, y: model.rhs(t, y, args), #function for getting rhs?
          t_span = [self.t_eval[0], self.t_eval[-1]],
          y0 = self.y0, t_eval = self.t_eval
-         #args= (args,)
         )
         return sol
     
