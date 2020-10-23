@@ -40,16 +40,66 @@ class Visualisation:
                 'fantastic model', 
                 'remarkable model']
 
+    dose_types: list of str, required
+        Specifies the types of dosing models for the solution data. 
+        The order of the types should correspond to the order
+        of the file paths in the data_file_paths parameter.
+        Elements must be one of:
+
+        'sc' = subcutaneous dosing
+        'iv' = intravenous dosing
+
     """
 
-    def __init__(self, data_file_paths, data_labels):
-        self.time = {}
-        self.quantity = {}
+    def __init__(self, data_file_paths, data_labels, dose_types):
+
+        if len(data_file_paths) != len(data_labels):
+            raise ValueError( ("The length of data_labels must be "
+                                "the same as the length of"
+                                "data_file_paths.") )
+
+        if len(data_file_paths) != len(dose_types):
+            raise ValueError( ("The length of data_labels must be "
+                                "the same as the length of"
+                                "dose_types.") )
+
+        if set(dose_types).issubset(['sc', 'iv']) is False:
+           raise ValueError( ("Not a valid form of dosing types. "
+                                "Elements must be 'sc' or 'iv'.") )
+        
+        self._data_labels = data_labels
+        self._time = {}
+        self._quantity = {} 
+        self._compartment_num = {}
+        self.plot_labels = {}
 
         for i, file_path in enumerate(data_file_paths):
-            label = data_labels[i]
-            self.time[label] = pd.read_csv(file_path, sep=',', header=None).loc[:, 0]
-            self.quantity[label] = pd.read_csv(file_path, sep=',', header=None).loc[:, 1]
+            label = self._data_labels[i]
+
+            self._time[label] = pd.read_csv(file_path, sep=',', 
+                                                header=None
+                                                ).loc[:, 0].to_numpy()
+            self._quantity[label] = pd.read_csv(file_path, sep=',', 
+                                                    header=None
+                                                    ).loc[:, 1:].to_numpy()
+            self._compartment_num[label] = np.shape(self._quantity[label])[1]
+            self.plot_labels[label] = [None] * self._compartment_num[label]
+
+            if dose_types[i] == 'sc':
+                self.plot_labels[label][0] = label + ' $q_0$'
+                self.plot_labels[label][1] = label + ' $q_c$'
+                self.plot_labels[label][2:] = [label + ' $q_{p%d}$' %(i)
+                                                for i in range(1, 
+                                                self._compartment_num[label] 
+                                                - 1) ]
+
+            elif dose_types[i] == 'iv':
+                self.plot_labels[label][0] = label + ' $q_c$'
+                self.plot_labels[label][1:] = [label + ' $q_{p%d}$' %(i)
+                                                for i in range(1, 
+                                                self._compartment_num[label]
+                                                ) ]
+
 
     def visualise(self, labels_of_data_to_visualise, save_file_path=None):
         """
@@ -76,7 +126,11 @@ class Visualisation:
             e.g. '../path/to/stunning_plot.pdf'
 
         """
-
+        if set(labels_of_data_to_visualise).issubset(self._data_labels) is False:
+           raise ValueError( ("Not a valid form of labels_of_data_to_visualise. " 
+                                "Elements must be in the the data_labels list " 
+                                "provided in the class initialisation.") )
+        
         # Colour map for the figure
         # A perceptually uniform colour map suitable for the most common
         # types of colour-blindness
@@ -86,16 +140,27 @@ class Visualisation:
         fig, ax = plt.subplots(1, 1)
 
         # Plotting
-        l = len(labels_of_data_to_visualise)
+        def width(length):
+            # width of the partitions for the argument of the
+            # colour map
+            output = 0
 
-        if l == 1:
-            for i, label in enumerate(labels_of_data_to_visualise):
-                ax.plot(self.time[label], self.quantity[label], 
-                        color=cmap(0.4), label=label )
-        else:
-            for i, label in enumerate(labels_of_data_to_visualise):
-                ax.plot(self.time[label], self.quantity[label], 
-                        color=cmap(i * 0.8 / (l - 1) ), label=label )
+            if length > 1:
+                output = length - 1
+            elif length <= 1:
+                output = 1
+
+            return output
+        
+        L = len(labels_of_data_to_visualise)
+
+        for i, label in enumerate(labels_of_data_to_visualise):
+            N = self._compartment_num[label]
+
+            for j in range(N):
+                ax.plot( self._time[label], self._quantity[label][:, j], 
+                    color=cmap((i * N + j) * 0.9 / width(L * N) ), 
+                    label=self.plot_labels[label][j] )
 
         # Formatting
         ax.set_xlabel(r'time / hr')
