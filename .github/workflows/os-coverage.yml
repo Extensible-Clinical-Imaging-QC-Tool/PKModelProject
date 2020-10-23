@@ -1,4 +1,4 @@
-name: Style tests (flake8)
+name: Unit tests (OS versions)
 
 on:
   push:
@@ -6,13 +6,15 @@ on:
       - master
   pull_request:
     branches:
-      - master
+      - '**'
 
 jobs:
 
   build-and-test:
-    name: style test
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-16.04, macos-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v1
@@ -23,12 +25,11 @@ jobs:
           python-version: 3.8
           architecture: x64
 
-      - name: install pints
+      - name: Install Dependencies
         run: |
           python --version
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install .
-          python -m pip install .[dev]
-      - name: run style tests
+      - name: Run unit tests
         run: |
-          python -m flake8 --ignore=W,E
+          python -m unittest
