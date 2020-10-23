@@ -5,6 +5,7 @@ import numpy as np
 import scipy.integrate
 import csv as csv
 import os
+
 class Solution:
     """A Pharmokinetic (PK) model solution
 
@@ -23,8 +24,8 @@ class Solution:
         e.g. [[0,0], [1,1]]
 
     """
-   
 
+    
     def __init__(self, list_of_models, t_eval, y0):
 
         self.models = list_of_models
@@ -86,6 +87,7 @@ class Solution:
          
         return sol
     
+    
     def _save_to_csv(self,time, sol, save_file_path):
         """
         Saves the provided time steps and solution to a .csv file.
@@ -113,10 +115,3 @@ class Solution:
         with open(save_file_path, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
             writer.writerows(solution_data)
-
-
-
-
-
-
-

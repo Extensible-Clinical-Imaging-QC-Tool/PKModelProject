@@ -21,11 +21,13 @@ class Visualisation:
 
     data_file_paths: list of str or PathLike or file-like objects, required
         Specifies the file paths or file names of the solution data
+
         to be visualised. The solution data should be a two column .csv 
         file, where the first column is the time steps and second column 
         is the quantity at each time step. The output .csv file generated 
         from the _save_to_csv method of the Solution class is of the 
         correct format.
+
 
         e.g. ['../path/to/beautiful_model_data.csv',
                 '../path/to/fantastic_model_data.csv'
@@ -126,6 +128,7 @@ class Visualisation:
             e.g. '../path/to/stunning_plot.pdf'
 
         """
+
         if set(labels_of_data_to_visualise).issubset(self._data_labels) is False:
            raise ValueError( ("Not a valid form of labels_of_data_to_visualise. " 
                                 "Elements must be in the the data_labels list " 

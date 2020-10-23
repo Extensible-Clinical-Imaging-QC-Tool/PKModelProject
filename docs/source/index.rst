@@ -4,11 +4,15 @@
    contain the root `toctree` directive.
 
 Welcome to Pharmokinetics Modelling Project's documentation!
-============================================================
+************************************************************
+
+
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   
+   introduction
 
 
 Indices and tables
