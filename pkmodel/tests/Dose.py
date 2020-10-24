@@ -37,7 +37,7 @@ class Protocol(object):
 
 	"""
 	
-	def __init__(self, quantity = 43, t_start=0, t_end=48, n = 1000):
+	def __init__(self, quantity = 43, t_start = 0, t_end = 10, n = 1000):
 
 		self.quantity = quantity
 		self.t_start = t_start  
@@ -47,7 +47,7 @@ class Protocol(object):
 	
 	# Protocol 1: Instantaneous drug dose injection
 	
-	def instantaneous_dose(self,k=1,T1=10,T2=30,sigma=1):
+	def instantaneous_dose(self,k = 1,T1 = 2,T2 = 8,sigma = 1):
 	
 		quantity, t= self.quantity, self.t
 		self.k = k
@@ -69,19 +69,20 @@ class Protocol(object):
 		
 	# Protocol 2: Steady injection of drug over time 
 		
-	def steady_dose(self):
-	
+	def steady_dose(self,quantity):
+		
 		t = self.t
-		quantity = self.quantity
+		self.quantity = quantity
 		X = quantity * np.ones_like(t)
 		return X
 		
 	# Protocol 3: Linear injection of drug over time 
 	
-	def linear_dose(self):
-	
+	def linear_dose(self,quantity):
+		
+		
 		t = self.t
-		quantity = self.quantity
+		self.quantity = quantity
 		X = quantity * t
 		return X
      

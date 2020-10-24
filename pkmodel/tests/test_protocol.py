@@ -1,8 +1,8 @@
 import pytest
 import numpy as np
 import numpy.testing as npt
-import pytest
-import Dose
+import pkmodel as pk
+from pkmodel import Protocol
 
 
  
@@ -14,7 +14,7 @@ where quantity is the specified drug quantity to inject [ng]
 
 @pytest.mark.parametrize("test,expected", [(44,44), (-20,44),(100,44)])
 def tests_steady_dose(test,expected):
-    protocol = Dose.Protocol(quantity = test)
+    protocol = Protocol(quantity = test)
     npt.assert_array_equal(protocol.steady_dose()[0], expected) 
 
 
@@ -26,7 +26,7 @@ where quantity is the specified drug quantity to inject [ng]
 
 @pytest.mark.parametrize("test, expected", [(0, 0), (100, 100), (100, 2)])
 def tests_linear_dose(test,expected):
-    protocol = Dose.Protocol(quantity=test)
+    protocol = Protocol(quantity=test)
     npt.assert_array_equal(protocol.linear_dose()[10], expected) 
 
 
@@ -36,7 +36,7 @@ Test the instantaneous dose function X ~ N(t,1) where t is the specified time of
 
 @pytest.mark.parametrize("test, expected", [(43, 0), (43, 43)])
 def tests_instantaneous_dose(test,expected):
-    protocol = Dose.Protocol(quantity=test)
+    protocol = Protocol(quantity=test)
     npt.assert_array_equal(protocol.instantaneous_dose()[799], expected) 
 
 
@@ -47,7 +47,7 @@ def tests_instantaneous_dose(test,expected):
     def test_instantaneous_dose_string():
 
         with pytest.raises(TypeError):
-            protocol = Dose.Protocol()
+            protocol = Protocol()
             protocol.instantaneous_dose("hello world")
             
 
