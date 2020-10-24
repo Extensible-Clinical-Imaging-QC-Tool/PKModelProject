@@ -8,28 +8,43 @@ class SolutionTest(unittest.TestCase):
     """
     Tests the :class:`Solution` class.
     """
-    def test_create(self):
+    @patch('pkmodel.Model')
+    def test_create_solution(self, mock_class):
         """
         Tests Solution creation.
         """
-        model_list = ['model1', 'model2']
+        test_model = mock_class
+        test_model.configure_mock(components = 2)
+        test_model.configure_mock(model_args = {'name': 'test_model'})
+        model_list = [test_model]
         t_eval = [0, 1, 2, 3, 4, 5]
-        y0 = [[0, 0], [1, 1, 1]]
+        y0 = [[0, 0]]
         solution = pk.Solution(model_list, t_eval, y0)
         self.assertEqual(solution.models, model_list)
         self.assertEqual(solution.t_eval, t_eval)
         self.assertEqual(solution.y0, y0)
+
+        test_model_bad_dimension = mock_class
+        test_model_bad_dimension.configure_mock(components = 3)
+        model_list2 = [test_model_bad_dimension]
+
+        # Test that the solution class catches the error when y0 and #compartments do not match
+        with self.assertRaises(ValueError):
+            solution2 = pk.Solution(model_list2, t_eval, y0)
    
     @patch.object(pk.Model, 'make_args', return_value= None)
-    def test_analyse(self, mock_class):
+    def test_analyse_models(self, mock_class):
         """
         Test creation of a list  containing a solution of each model.
 
         """
         # Create a Solution object
-        model_list = [mock_class, mock_class]
+        model1 = mock_class
+        model2 = mock_class
+        mock_class.configure_mock(components = 2)
+        model_list = [model1, model2]
         t_eval = [0, 1, 2, 3, 4, 5]
-        y0 = [[0, 0], [1, 1, 1]]
+        y0 = [[0, 0], [1, 1]]
         solution = pk.Solution(model_list, t_eval, y0)
 
         # Set mock functions and properties
@@ -63,8 +78,9 @@ class SolutionTest(unittest.TestCase):
             return [dx_dt, dz_dt]
         
         # Create a Solution object
-        y_0 = np.array([-1, 2])
+        y_0 = [[-1, 2]]
         test_model = mock_class
+        test_model.configure_mock(components = 2)
         t_eval = np.linspace(0,100,1000)
         testsol = pk.Solution([test_model], t_eval, y_0)
 
@@ -72,7 +88,7 @@ class SolutionTest(unittest.TestCase):
         test_model.rhs.side_effect = test_rhs
 
         args = [-1, 1/4]
-        sol = testsol._integrate(test_model, args, y_0)
+        sol = testsol._integrate(test_model, args, np.array(y_0[0]))
 
         # Obtain y values for the analytical solution
         y_sol = np.array([test_solution(x) for x in t_eval])
