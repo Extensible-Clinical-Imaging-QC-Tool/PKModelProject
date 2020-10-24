@@ -94,4 +94,4 @@ To contribute to the PK project, follow these steps:
 
 # Licence
 
-This project uses the following licence: [a relative link](Licence.md)
+This project uses the following licence: [MIT](Licence.md)
