@@ -1,51 +1,56 @@
-import unittest
+import pytest
 import numpy as np
 import numpy.testing as npt
 import pytest
 import Dose
 
+
+ 
 """
-    Tests of the Protocol class from the Dose file
+Test the steady dose function X as a function of time t:
+X(t) = quantity, 
+where quantity is the specified drug quantity to inject [ng]
 """
 
-class ProtocolTest(unittest.TestCase):
-   
-    def test_steady_dose(self):
-        """
-        Unittests of the steady dose function
-        """
-        protocol = Dose.Protocol()
-        self.assertEqual(protocol.steady_dose().any(), 43)
-
-
-"""
-Multiple unittests of the steady dose function
-"""
-@pytest.mark.parametrize("test, expected", [(43, 43), (-20, 43)])
+@pytest.mark.parametrize("test,expected", [(44,44), (-20,44),(100,44)])
 def tests_steady_dose(test,expected):
-    protocol = Dose.Protocol()
-    npt.assert_array_equal(protocol.steady_dose(), expected)
+    protocol = Dose.Protocol(quantity = test)
+    npt.assert_array_equal(protocol.steady_dose()[0], expected) 
 
 
-class ProtocolInput(object):
-    
-     def test_instantaneous_dose_string(self):
-        """
-        Test for TypeError when passing strings in the instantaneous dose function
-        """
-        
-        protocol = Dose.Protocol()
+"""
+Test the linear dose function X as a function of time t:
+X(t) = quantity*t, 
+where quantity is the specified drug quantity to inject [ng]
+"""
+
+@pytest.mark.parametrize("test, expected", [(0, 0), (100, 100), (100, 2)])
+def tests_linear_dose(test,expected):
+    protocol = Dose.Protocol(quantity=test)
+    npt.assert_array_equal(protocol.linear_dose()[10], expected) 
+
+
+"""
+Test the instantaneous dose function X ~ N(t,1) where t is the specified time of injection (hrs)
+"""
+
+@pytest.mark.parametrize("test, expected", [(43, 0), (43, 43)])
+def tests_instantaneous_dose(test,expected):
+    protocol = Dose.Protocol(quantity=test)
+    npt.assert_array_equal(protocol.instantaneous_dose()[799], expected) 
+
+
+    """
+    Test for TypeError when passing strings in the instantaneous dose function
+    """  
+
+    def test_instantaneous_dose_string():
+
         with pytest.raises(TypeError):
-             protocol.instantaneous_dose('hello world')
+            protocol = Dose.Protocol()
+            protocol.instantaneous_dose("hello world")
+            
 
-
-# Unittest
-ProtocolTest().test_steady_dose()
-
-# Parameterised Unittests
-tests_steady_dose()
-
-# Testing for TypeError when passing strings
-ProtocolInput().test_instantaneous_dose_string()
-
-
+ 
+if __name__ == '__main__':
+    pytest.main()
