@@ -23,25 +23,57 @@ To install the PK project, follow the steps:
 Linux and MacOS:
 
 Create a virtual environment
-<python3 -m venv venv>
-<source bin/activate/venv>
+
+```
+$ python3 -m venv venv
+$ source bin/activate/venv
+
+```
+
 Download the repository and move to the  PKModelProject folder
-<cd PKModelProject folder>
+
+```
+$ cd PKModelProject folder
+
+```
+
 Install the dependencies
-<python3 -m pip install setup.py>
+
+```
+$ python3 -m pip install setup.py
+
+```
 
 Windows:
 
 Create a virtual environment
-<py -m venv venv>
-<.\venv\Scripts\activate>
-Download the repository and move to the  PKModelProject folder
-<cd PKModelProject folder>
-Install the dependencies
-<py -m pip install setup.py>
 
+```
+$ py -m venv venv>
+
+$ .\venv\Scripts\activate
+
+```
+Download the repository and move to the  PKModelProject folder
+
+```
+$ cd PKModelProject folder
+
+```
+
+Install the dependencies
+
+```
+$ py -m pip install setup.py
+
+```
 
 # Usage 
+
+```
+$ python3 model.py
+
+```
 
 # Contributing to PK Project
 
@@ -62,4 +94,4 @@ To contribute to the PK project, follow these steps:
 
 # Licence
 
-This project uses the following licence: MIT.
+This project uses the following licence: [a relative link](Licence.md)
