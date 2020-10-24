@@ -85,8 +85,17 @@ class Protocol(object):
 		X = quantity * t
 		return X
      
-	
-	
+def main():
+    import matplotlib.pyplot as plt 
+    p = Protocol()
+    print(p.instantaneous_dose())
+    plt.plot(p.t,p.instantaneous_dose())
+    #plt.plot(p.periodic_dose())
+  
+    plt.title('Dose as a function of time')
+    plt.xlabel('Time(h)')
+    plt.ylabel('Drug dose(ng)')
+    plt.show()	
 
 
 	
