@@ -35,7 +35,7 @@ def get_readme():
 # Go!
 setup(
     # Module name (lowercase)
-    name='pkmodel',
+    name='Group 4 - pkmodel',
 
     # Version
     version=get_version(),
@@ -43,6 +43,8 @@ setup(
     description='A PK Model package',
 
     long_description=get_readme(),
+
+    long_description_content_type = 'text/markdown',
 
     license='MIT license',
 
