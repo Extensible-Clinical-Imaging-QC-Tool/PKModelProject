@@ -6,7 +6,6 @@
 
 The Pharmokinetic Modelling (PK) Project is a python library that allows pharmacologists and individuals interested in pharmokinetics to solve and visualise the solution of a PK model after specifying a protocol.
 
-See here for further explanations about the problem: <insert read the docs link>
 
 # Prerequisites
 

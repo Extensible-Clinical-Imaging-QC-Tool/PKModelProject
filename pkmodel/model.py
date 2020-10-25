@@ -3,11 +3,18 @@
 #
 
 class Model:
-    """A Pharmokinetic (PK) model
+    """
+    A Pharmokinetic (PK) model
 
     Allows users to define a PK model with the 
     desired number of components, component properties
-    and the method of dose intake
+    and the method of dose intake.
+
+    components: number of model componenets
+    V_x : volume of compartment x
+    Q_x : transition rates between the 
+    central component and peripheral component x
+    q_x : quantity of the drug in component x
 
     Parameters
     ----------
@@ -33,7 +40,10 @@ class Model:
         'sc' = subcutaneous
         'iv' = intravenous
 
+    :param dose_t: ndarray
     """
+
+
     def __init__(self, components,model_args,dose_type,dose_t):
         # Preconditions to ensure that the correct number of properties are provided
         # for the desired model and that the inputs are correct.
@@ -64,7 +74,6 @@ class Model:
     def make_args(self):
         # Creates a list of arguments that define the system of equations.
         # The arguments will be used to call rhs in solution.py
-
         CL = self.model_args['CL']
         Q_rates = []
         vols = [self.model_args['V_c']]
@@ -104,8 +113,8 @@ class Model:
 
 
     def rhs(self,t,y,args):
-    # Define the system of equations based on the type of dose 
-    # intake
+        # Define the system of equations based on the type of dose 
+        # intake
         if self.dose_type == 'sc':
             k_a, v_x, Q_px, CL  = args[0], args[1], args[2], args[3]
             q_0, q_x = y[0], y[1:]
@@ -115,7 +124,6 @@ class Model:
             dqc_dt = k_a*q_0 - (q_x[0]/v_x[0])*CL - sum(transitions)
             
             return [dq0_dt,dqc_dt] + transitions
-
         else:
             v_x, Q_px, CL  = args[0], args[1], args[2]
             q_x  = y
