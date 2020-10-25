@@ -11,7 +11,7 @@ The Pharmokinetic Modelling (PK) Project is a python library that allows pharmac
 
 Ensure you have met the following requirements
 
-* You have installed Pyhton 3.6 or latest versions
+* You have installed Python 3.5 or latest versions [3.6, 3.7, 3.8]
 * OS supported: Windows, Linux, Mac
 * You read the documentation
 
@@ -79,9 +79,9 @@ $ python3 model.py
 To contribute to the PK project, follow these steps:
 
 1. Fork the repository
-2. Create a branch: git checkout -b <branch_name>.
-3. Once your changes are made, commit them: git commit -m '<commit_message>'
-4. Push to the original branch: git push origin <project_name>/<location>
+2. Create a branch: $ git checkout -b <branch_name>.
+3. Once your changes are made, commit them: $ git commit -m '<commit_message>'
+4. Push to the original branch: $ git push origin <project_name>/<location>
 5. Create the pull request.
 
 # Contributors 
