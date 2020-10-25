@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import Mock
 
 import pkmodel as pk
 from pkmodel import Model,Visualisation,Solution,Protocol
@@ -8,7 +7,6 @@ class ModelTest(unittest.TestCase):
     """
     Tests the :class:`Model` class.
     """
-    #dose_t = Mock(return_value = mp.ones())
     
     def test_model_instantiation(self):
         """
@@ -39,24 +37,24 @@ class ModelTest(unittest.TestCase):
 
         # Negative value in the component properties
         with self.assertRaises(AssertionError):
-            obj = Model(1,test_args_nve,'iv',0)
+            obj = pk.Model(1,test_args_nve,'iv',0)
 
         # Unavailable type of injection
         with self.assertRaises(ValueError):
-            obj = Model(0,test_args_iv1,'jk',0)
+            obj = pk.Model(0,test_args_iv1,'jk',0)
 
         # Too few components for subcutaneous injections
         with self.assertRaises(ValueError):
-            obj = Model(1,test_args_iv1,'sc',0)
+            obj = pk.Model(1,test_args_iv1,'sc',0)
 
         # Number of components and model keys do not match
             # sc
         with self.assertRaises(ValueError):
-            obj = Model(2,test_args_sc3,'sc',0)
+            obj = pk.Model(2,test_args_sc3,'sc',0)
 
             # iv
         with self.assertRaises(ValueError):
-            obj = Model(3,test_args_iv1,'iv',0) 
+            obj = pk.Model(3,test_args_iv1,'iv',0) 
 
 
     def test_model_definition(self):
@@ -82,7 +80,7 @@ class ModelTest(unittest.TestCase):
         
         # test correct definition of 1 comp iv
 
-        obj1 = Model(1,test_args_iv1,'iv',[0])
+        obj1 = pk.Model(1,test_args_iv1,'iv',[0])
         args = obj1.make_args()
         assert len(args[0]) == 1 , 'Volumes incorrectly defined'
         assert len(args[1]) == 0 , 'Transitions incorrectly defined'
@@ -92,7 +90,7 @@ class ModelTest(unittest.TestCase):
         assert len(rates) == 1, 'iv ODE system incorrectly defined'
         
         # test correct definition of 3 comp sc
-        obj1 = Model(3,test_args_sc3,'sc',[0])
+        obj1 = pk.Model(3,test_args_sc3,'sc',[0])
         args = obj1.make_args()
         assert type(args[0]) == float , 'k_a incorrectly defined'
         assert len(args[1]) == 2 , 'Volumes incorrectly defined'
@@ -100,7 +98,6 @@ class ModelTest(unittest.TestCase):
         assert type(args[3]) == float , 'CL incorrectly defined'
 
         rates = obj1.rhs(t = 0, y = [0,0,0],args = args)
-        print('rates are = ',rates)
         assert len(rates) == 3, 'sc ODE system incorrectly defined'
 
 

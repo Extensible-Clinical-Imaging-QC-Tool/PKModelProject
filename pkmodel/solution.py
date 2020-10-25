@@ -27,6 +27,11 @@ class Solution:
 
     
     def __init__(self, list_of_models, t_eval, y0):
+        n = 0
+        for model in list_of_models:
+            if len(y0[n]) != model.components:
+                raise ValueError("The number of initial conditions does not match the number of model components in %s" %model.model_args['name'])
+            n += 1
 
         self.models = list_of_models
         self.y0 = y0

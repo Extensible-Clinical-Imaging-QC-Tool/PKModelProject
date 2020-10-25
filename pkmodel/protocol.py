@@ -78,6 +78,7 @@ class Protocol(object):
 		
 	# Protocol 3: Linear injection of drug over time 
 	
+	
 	def linear_dose(self):
 	
 		t = self.t
