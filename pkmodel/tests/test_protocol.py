@@ -1,9 +1,10 @@
 
-from protocol import Protocol
+
 import unittest
 from unittest import TestCase
 
-
+import pkmodel as pk
+from pkmodel import Protocol
 
 class ProtocolTest(TestCase):
 
