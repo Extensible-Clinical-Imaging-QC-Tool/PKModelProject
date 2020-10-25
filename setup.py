@@ -35,14 +35,16 @@ def get_readme():
 # Go!
 setup(
     # Module name (lowercase)
-    name='pkmodel',
+    name='Group 4 - pkmodel',
 
     # Version
     version=get_version(),
 
-    description='An example Python project.',
+    description='A PK Model package',
 
     long_description=get_readme(),
+
+    long_description_content_type = 'text/markdown',
 
     license='MIT license',
 
@@ -50,11 +52,11 @@ setup(
 
     # author_email='',
 
-    maintainer='Martin Robinson',
+    maintainer='Group 4 - ECIQCT',
 
-    maintainer_email='martin.robinson@cs.ox.ac.uk',
+    maintainer_email='emmanuel.oladokun@new.ox.ac.uk',
 
-    url='https://github.com/SABS-R3/2020-software-engineering-projects-pk',
+    url='https://github.com/Extensible-Clinical-Imaging-QC-Tool/PKModelProject',
 
     # Packages to include
     packages=find_packages(include=('pkmodel', 'pkmodel.*')),
