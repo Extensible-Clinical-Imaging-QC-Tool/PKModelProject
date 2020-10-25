@@ -13,6 +13,7 @@ Welcome to Pharmokinetics Modelling Project's documentation!
    :caption: Contents:
    
    introduction
+   solution
 
 
 Indices and tables
