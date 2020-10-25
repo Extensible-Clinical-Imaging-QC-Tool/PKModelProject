@@ -23,7 +23,7 @@ We address this two-compartment model by solving the following set of 1st order 
       \frac { dq_{p_{1}} }{ dt } &= Q_{p_{1}} ( \frac { q_{c} }{V_{c} } - \frac { q_{p_{1}} }{V_{p_{1}} } )
 
 
- * The dose function Dose(t) consists of instantaneous doses of X ng of the drug at one or more time points, a steady or constant application of X ng per hour over a given time period
+ * The dose function Dose(t) consists of instantaneous doses of X ng of the drug at one or more time points, a steady or constant application of X ng per hour over a given time period, please see Figure 1 below.
 
  * :math:`V_{c}` [mL] is the volume of the central compartment 
 
@@ -49,3 +49,41 @@ We describe a three-compartment model with the addition of another compartment f
       \frac { dq_{p_{1}} }{ dt } &= Q_{p_{1}} ( \frac { q_{c} }{V_{c} } - \frac { q_{p_{1}} }{V_{p_{1}} } )
 
 * :math:`k_{a}` [/h] is the “absorption” rate 
+
+
+Dosing Protocol
+---------------
+
+Figure 1
+
++-----------------------------------------------------------------------------------------+
+|                                                                                         |
+|                                                                                         |
+| .. math::                                                                               |
+|     :label: Dosing                                                                      |
+|                                                                                         |
+|                                                                                         |
+|                                                                                         |
+| .. image:: ../source/plot_steady_dose.png                                               |
+|                                                                                         |
+| (a) Constant Dosing                                                                     |
+|-----------------------------------------------------------------------------------------|
+| .. image:: ../source/plot_linear_dose.png                                               |
+|                                                                                         |
+| (b) Dosing with linear increase                                                         |    
+|                                                                                         |
++-----------------------------------------------------------------------------------------+
+| .. image:: ../source/plot_instantaneous_dose.png                                        |
+|                                                                                         |
+| (c) Instantaneous Dosing                                                                |
++-----------------------------------------------------------------------------------------+
+
+
+.. |beginfigref| raw:: latex
+
+                  \begin{minipage}{\textwidth}
+
+
+.. |endfigref| raw:: latex
+
+                   \end{minipage}
