@@ -30,7 +30,7 @@ class SolutionTest(unittest.TestCase):
 
         # Test that the solution class catches the error when y0 and #compartments do not match
         with self.assertRaises(ValueError):
-            solution2 = pk.Solution(model_list2, t_eval, y0)
+            pk.Solution(model_list2, t_eval, y0)
    
     @patch.object(pk.Model, 'make_args', return_value= None)
     def test_analyse_models(self, mock_class):
