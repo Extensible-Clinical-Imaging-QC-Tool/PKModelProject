@@ -12,12 +12,14 @@ class Solution:
     Parameters
     ----------
 
-    :param list_of_models: list of Model class instances, required
+    :param list_of_models: list of Model class instances, required.
         
-    :param t_eval: array_like, required
+    :param t_eval: array_like, required.
+
         Time steps at which the solution should be computed.
     
-    :param y0: a list of list objects, required
+    :param y0: a list of list objects, required.
+
         Initial amount of drug in all compartments for each model. 
         Should be a list of each model's initial conditions.
 
@@ -41,7 +43,7 @@ class Solution:
     def analyse_models(self):
         """
         Computes a solution of each model specified in the list of models.
-        The solution data for each model is saved as a csv in the provided path.
+        The solution data for each model is saved as a csv in the current working directory.
 
         Returns
         -------
