@@ -1,18 +1,12 @@
 
 
 import unittest
-from unittest import TestCase
 from pkmodel import Protocol
 
 
 
 class ProtocolTest(unittest.TestCase):
     
-    def setUp(self):
-        self.verificationErrors = []
-
-    def tearDown(self):
-        self.assertEqual([], self.verificationErrors)
 
     def tests_steady_dose(self):
         
@@ -26,7 +20,7 @@ class ProtocolTest(unittest.TestCase):
             protocol = Protocol(quantity = test)
             with self.subTest():
                 try: self.assertEqual(protocol.steady_dose()[0], expected)
-                except AssertionError as e:
+                except AssertionError:
                      self.assertRaises(AssertionError)
 
     
@@ -42,12 +36,9 @@ class ProtocolTest(unittest.TestCase):
             protocol = Protocol(quantity = test)
             with self.subTest():
                 try: self.assertEqual(protocol.linear_dose()[10], expected)
-                except AssertionError as e:
+                except AssertionError:
                      self.assertRaises(AssertionError)
                 
-                
-                
-    
     
     def tests_instantantaneous_dose(self):
 
@@ -59,8 +50,9 @@ class ProtocolTest(unittest.TestCase):
             protocol = Protocol(quantity = test)
             with self.subTest():
                 try: self.assertEqual(protocol.instantaneous_dose()[799], expected)
-                except AssertionError as e:
+                except AssertionError:
                      self.assertRaises(AssertionError)
+
 
     def test_instantaneous_dose_string(self):
 
@@ -75,5 +67,5 @@ class ProtocolTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
+    unittest.main()
 
