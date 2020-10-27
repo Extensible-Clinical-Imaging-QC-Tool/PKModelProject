@@ -2,7 +2,7 @@
 
 import unittest
 from unittest import TestCase
-import pkmodel import Protocol
+from pkmodel import Protocol
 
 
 class ProtocolTest(unittest.TestCase):
