@@ -1,7 +1,6 @@
 import unittest
-
 import pkmodel as pk
-from pkmodel import Model,Visualisation,Solution,Protocol
+
 
 class ModelTest(unittest.TestCase):
     """
