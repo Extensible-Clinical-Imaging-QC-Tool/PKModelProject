@@ -2,7 +2,6 @@ import pkmodel as pk
 import unittest
 from unittest.mock import patch
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 
 class VisualisationTest(unittest.TestCase):
