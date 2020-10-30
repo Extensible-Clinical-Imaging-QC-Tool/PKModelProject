@@ -21,7 +21,6 @@ class Visualisation:
 
     data_file_paths: list of str or PathLike or file-like objects, required
         Specifies the file paths or file names of the solution data
-
         to be visualised. The solution data should be a two column .csv 
         file, where the first column is the time steps and second column 
         is the quantity at each time step. The output .csv file generated 
@@ -51,18 +50,26 @@ class Visualisation:
         'sc' = subcutaneous dosing
         'iv' = intravenous dosing
 
+    Attributes
+    ----------
+
+    .plot_labels: a dict with str values
+        A dictionary of plot labels for each quantity in each data file, 
+        automatically generated after the class initialisation. The keywords
+        are the data_file_labels provided during the initialisation.
+
     """
 
     def __init__(self, data_file_paths, data_labels, dose_types):
 
         if len(data_file_paths) != len(data_labels):
             raise ValueError( ("The length of data_labels must be "
-                                "the same as the length of"
+                                "the same as the length of "
                                 "data_file_paths.") )
 
         if len(data_file_paths) != len(dose_types):
             raise ValueError( ("The length of data_labels must be "
-                                "the same as the length of"
+                                "the same as the length of "
                                 "dose_types.") )
 
         if set(dose_types).issubset(['sc', 'iv']) is False:
@@ -172,6 +179,6 @@ class Visualisation:
 
         # Saving the figure
         if save_file_path is not None:
-            fig.savefig(save_file_path, bbox_inches='tight')
+            plt.savefig(save_file_path, bbox_inches='tight')
 
         plt.show()
