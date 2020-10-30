@@ -42,7 +42,6 @@ class SolutionTest(unittest.TestCase):
         model1 = mock_class
         model2 = mock_class
         mock_class.configure_mock(components = 2)
-        mock_class.configure_mock(model_args = {'name': 'test_model'})
         model_list = [model1, model2]
         t_eval = [0, 1, 2, 3, 4, 5]
         y0 = [[0, 0], [1, 1]]
@@ -97,5 +96,8 @@ class SolutionTest(unittest.TestCase):
     
 
 
+
+if __name__ == '__main__':
+    unittest.main()
 
 
