@@ -36,24 +36,24 @@ class ModelTest(unittest.TestCase):
 
         # Negative value in the component properties
         with self.assertRaises(AssertionError):
-            obj = pk.Model(1,test_args_nve,'iv',0)
+            pk.Model(1,test_args_nve,'iv',0)
 
         # Unavailable type of injection
         with self.assertRaises(ValueError):
-            obj = pk.Model(0,test_args_iv1,'jk',0)
+            pk.Model(0,test_args_iv1,'jk',0)
 
         # Too few components for subcutaneous injections
         with self.assertRaises(ValueError):
-            obj = pk.Model(1,test_args_iv1,'sc',0)
+            pk.Model(1,test_args_iv1,'sc',0)
 
         # Number of components and model keys do not match
             # sc
         with self.assertRaises(ValueError):
-            obj = pk.Model(2,test_args_sc3,'sc',0)
+            pk.Model(2,test_args_sc3,'sc',0)
 
             # iv
         with self.assertRaises(ValueError):
-            obj = pk.Model(3,test_args_iv1,'iv',0) 
+            pk.Model(3,test_args_iv1,'iv',0) 
 
 
     def test_model_definition(self):
