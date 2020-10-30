@@ -14,6 +14,7 @@ Welcome to Pharmokinetics Modelling Project's documentation!
    
    introduction
    solution
+   visualisation
 
 
 Indices and tables
